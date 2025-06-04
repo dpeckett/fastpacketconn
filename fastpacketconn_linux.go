@@ -156,11 +156,6 @@ func NewPacketConn(conn batchPacketConn) *PacketConn {
 	}
 }
 
-// BatchSize is the maximum number of segments to read or write in a single batch operation.
-func (pc *PacketConn) BatchSize() int {
-	return batchSize
-}
-
 // ReadBatch reads multiple UDP segments from the underlying connection into the provided buffers.
 // It fills each buffer with the received segment data, records the number of bytes read in 'sizes',
 // and stores the source address of each segment in 'addrs'.
@@ -241,6 +236,12 @@ func (pc *PacketConn) WriteBatch(bufs [][]byte, sizes []int, addrs []*net.UDPAdd
 	return len(bufs), nil
 }
 
+// BatchSize is the maximum number of segments to read or write in a single batch operation.
+func (pc *PacketConn) BatchSize() int {
+	return batchSize
+}
+
+// Close closes the underlying connection of the PacketConn.
 func (pc *PacketConn) Close() error {
 	return pc.conn.Close()
 }
